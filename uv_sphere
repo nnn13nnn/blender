@@ -1,0 +1,8 @@
+import bpy
+
+
+
+
+
+
+bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0,0,1.5), segments=64, ring_count=32)
