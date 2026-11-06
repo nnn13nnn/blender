@@ -1,0 +1,15 @@
+import bpy
+
+for obj in list(bpy.data.objects):
+    bpy.data.objects.remove(obj, do_unlink=True)
+
+for i in range(20):
+    z_position = i * 0.5
+    rotation_z = i * 0.3  
+    
+    bpy.ops.mesh.primitive_cube_add(
+        size=1,
+        scale=(3, 1, 0.2), 
+        location=(0, 0, z_position),
+        rotation=(0, 0, rotation_z)
+    )
