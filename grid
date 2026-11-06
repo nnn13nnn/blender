@@ -1,0 +1,15 @@
+import bpy
+
+for obj in list(bpy.data.objects):
+    bpy.data.objects.remove(obj, do_unlink=True)
+
+for x_index in range(5):
+    for y_index in range(5):
+        x_pos = x_index * 3
+        y_pos = y_index * 3
+        
+        bpy.ops.mesh.primitive_cone_add(
+            radius1=1,
+            depth=2,
+            location=(x_pos, y_pos, 0)
+        )
