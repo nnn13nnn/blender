@@ -1,0 +1,16 @@
+import bpy
+import random
+
+for obj in list(bpy.data.objects):
+    bpy.data.objects.remove(obj, do_unlink=True)
+
+for i in range(50):
+    rand_x = random.uniform(-10, 10)
+    rand_y = random.uniform(-10, 10)
+    rand_z = random.uniform(0, 10)
+    rand_radius = random.uniform(0.2, 1.5)
+    
+    bpy.ops.mesh.primitive_uv_sphere_add(
+        radius=rand_radius,
+        location=(rand_x, rand_y, rand_z)
+    )
