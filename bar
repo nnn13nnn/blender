@@ -1,0 +1,21 @@
+import bpy
+
+for obj in bpy.data.objects:
+    bpy.data.objects.remove(obj, do_unlink=True)
+
+
+
+data = [12, 19, 15, 25, 32, 28, 40, 38, 30, 22, 18, 45]
+spacing = 1.5
+
+for index, value in enumerate(data):
+ 
+    bpy.ops.mesh.primitive_cube_add(size=1, location=(index * spacing, 0, 0))
+    bar = bpy.context.active_object
+    
+    
+    height = value / 10.0
+    bar.scale = (0.8, 0.8, height)
+    
+    
+    bar.location.z = height / 2.0
