@@ -1,0 +1,31 @@
+import bpy
+import math
+
+for obj in bpy.data.objects:
+    bpy.data.objects.remove(obj, do_unlink=True)
+
+grid_size = 10
+spacing = 1.2
+total_frames = 100
+
+bpy.context.scene.frame_end = total_frames
+
+for x in range(grid_size):
+    for y in range(grid_size):
+        
+        bpy.ops.mesh.primitive_cube_add(size=0.8, location=(x * spacing, y * spacing, 0))
+        cube = bpy.context.active_object
+        
+        
+        dist = math.sqrt((x - grid_size/2)**2 + (y - grid_size/2)**2)
+        
+        
+        for frame in range(0, total_frames + 1, 5):
+            bpy.context.scene.frame_set(frame)
+            
+           
+            z = math.sin(dist * 0.8 - (frame * 0.15)) * 1.5
+            cube.location.z = z
+            
+            
+            cube.keyframe_insert(data_path="location", index=2)
