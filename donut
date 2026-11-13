@@ -1,0 +1,38 @@
+import bpy
+
+for obj in bpy.data.objects:
+    bpy.data.objects.remove(obj, do_unlink=True)
+
+
+
+if bpy.context.scene.world and bpy.context.scene.world.use_nodes:
+    bg_node = bpy.context.scene.world.node_tree.nodes.get("Background")
+    if bg_node:
+        bg_node.inputs["Color"].default_value = (0.005, 0.005, 0.01, 1.0)
+
+
+bpy.ops.mesh.primitive_torus_add(
+    major_segments=64, 
+    minor_segments=32, 
+    major_radius=1.5, 
+    minor_radius=0.35
+)
+donut = bpy.context.active_object
+bpy.ops.object.shade_smooth()
+
+
+mat = bpy.data.materials.new(name="NeonBlue")
+mat.use_nodes = True
+bsdf = mat.node_tree.nodes.get("Principled BSDF")
+
+
+bsdf.inputs["Base Color"].default_value = (0.0, 0.8, 1.0, 1.0)
+bsdf.inputs["Emission Color"].default_value = (0.0, 0.85, 1.0, 1.0) # Κυανό νέον
+bsdf.inputs["Emission Strength"].default_value = 15.0 # Ένταση φωτός
+
+
+donut.data.materials.append(mat)
+
+
+if hasattr(bpy.context.scene.eevee, "use_bloom"):
+    bpy.context.scene.eevee.use_bloom = True
