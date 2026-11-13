@@ -1,0 +1,22 @@
+import bpy
+import math
+
+for obj in bpy.data.objects:
+    bpy.data.objects.remove(obj, do_unlink=True)
+    
+    
+num_floors = 40
+height_step = 0.25
+rotation_step = math.radians(12) 
+
+for i in range(num_floors):
+   
+    bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, i * height_step))
+    obj = bpy.context.active_object
+    
+   
+    scale_factor = 3.0 - (i * 0.05)
+    obj.scale = (scale_factor, scale_factor * 0.6, 0.1)
+    
+   
+    obj.rotation_euler[2] = i * rotation_step
