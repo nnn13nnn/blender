@@ -1,0 +1,31 @@
+import bpy
+
+for obj in bpy.data.objects:
+    bpy.data.objects.remove(obj, do_unlink=True)
+
+
+
+bpy.ops.mesh.primitive_uv_sphere_add(segments=64, ring_count=32, radius=1.5)
+sphere = bpy.context.active_object
+bpy.ops.object.shade_smooth()
+
+
+mat = bpy.data.materials.new(name="GoldMaterial")
+mat.use_nodes = True
+nodes = mat.node_tree.nodes
+
+
+bsdf = nodes.get("Principled BSDF")
+
+)
+bsdf.inputs["Base Color"].default_value = (1.0, 0.76, 0.33, 1.0) # RGBA
+bsdf.inputs["Metallic"].default_value = 1.0
+bsdf.inputs["Roughness"].default_value = 0.2
+
+
+sphere.data.materials.append(mat)
+
+
+bpy.ops.object.light_add(type='AREA', location=(4, -4, 5))
+light = bpy.context.active_object
+light.data.energy = 1000
