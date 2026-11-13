@@ -1,0 +1,48 @@
+
+import bpy
+import math
+
+for obj in bpy.data.objects:
+    bpy.data.objects.remove(obj, do_unlink=True)
+
+if bpy.context.scene.world and bpy.context.scene.world.use_nodes:
+    bg = bpy.context.scene.world.node_tree.nodes.get("Background")
+    if bg:
+        bg.inputs["Color"].default_value = (0.01, 0.01, 0.015, 1.0)
+
+num_rings = 20
+
+for i in range(num_rings):
+    
+    progress = i / (num_rings - 1)
+    
+    
+    bpy.ops.mesh.primitive_torus_add(
+        major_segments=64,
+        minor_segments=24,
+        major_radius=2.5 - (progress * 1.8), 
+        minor_radius=0.05,
+        location=(0, 0, i * 0.25) 
+    )
+    ring = bpy.context.active_object
+    bpy.ops.object.shade_smooth()
+    
+    
+    ring.rotation_euler.x = math.sin(progress * math.pi) * 0.6
+    ring.rotation_euler.y = math.cos(progress * math.pi) * 0.6
+    
+
+    mat = bpy.data.materials.new(name=f"RingMat_{i}")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes.get("Principled BSDF")
+    
+  
+    r = progress
+    g = 0.2
+    b = 1.0 - progress
+    
+    bsdf.inputs["Base Color"].default_value = (r, g, b, 1.0)
+    bsdf.inputs["Emission Color"].default_value = (r, g, b, 1.0)
+    bsdf.inputs["Emission Strength"].default_value = 8.0
+    
+    ring.data.materials.append(mat)
